@@ -15,5 +15,5 @@ defaults:
     values:
       layout: bin
 
-baseusr: /notebook
+baseurl: /notebook
 url: https://nicolasbourhis.github.io/
