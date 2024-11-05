@@ -1,5 +1,0 @@
----
-functions: [windows]
----
-
-Hello windows
