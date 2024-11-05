@@ -9,3 +9,6 @@ windows:
 
 docker:
   label: Docker
+
+dll:
+  label: DLL
