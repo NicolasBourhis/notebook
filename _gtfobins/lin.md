@@ -11,7 +11,7 @@ functions:
 hello blog
 
 ok
-![alt text](/assets/media/internet.webp)
+![alt text]({{ /assets/media/internet.webp | relative_url }})
 
 
 ```python
