@@ -6,12 +6,10 @@ tags:
 
 ---
 
-# Hello notebook !
-
 hello notebook
 
 ![alt text](/notebook/assets/media/internet.webp)
 
 ```python
-print("hello blog")
+print("hello notebook")
 ```
