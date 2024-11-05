@@ -1,0 +1,11 @@
+<ul class="tag-list">
+    {% for data_tag_pair in site.data.tags %}
+        {% assign data_tag_id = data_tag_pair[0] %}
+        {% assign data_tag = data_tag_pair[1] %}
+        {% for note_tag in include.bin.functions %}
+            {% if note_tag == data_tag_id %}
+            <li><a href="#+{{ note_tag | downcase }}">{{ data_tag.label }}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</ul>

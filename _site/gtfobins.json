@@ -1,0 +1,17 @@
+{
+    
+        
+        "lin": {
+            "description": null,
+            "functions": ["linux","windows","docker"]
+        }
+        ,
+    
+        
+        "windows": {
+            "description": null,
+            "functions": ["windows"]
+        }
+        
+    
+}

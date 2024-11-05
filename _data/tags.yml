@@ -1,0 +1,11 @@
+---
+# this is the rendering order of tags
+
+linux:
+  label: Linux
+
+windows:
+  label: Windows
+
+docker:
+  label: Docker
