@@ -8,9 +8,12 @@ tags:
 Challenge:
   * serve the output of a linux command with an http server
 
+with nc
+```
+while true; do { echo -ne "HTTP/1.0 200 OK\r\n\r\n"; cat hello.txt; } | nc -q1 -l -p 8080; done
+```
 
-
-cheating, installing socat
+cheating by installing socat but the cleanest option sofar
 
 ```bash
 socat \                
