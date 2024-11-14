@@ -2,7 +2,7 @@
 tags:
   - linux
   - rsync
-  - design_pattern
+  - design_patterns
 ---
 
 Here I present how we can transfer file continuously from dir_A to dir_B using rsync and cron,
