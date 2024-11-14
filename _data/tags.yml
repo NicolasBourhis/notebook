@@ -15,3 +15,6 @@ dll:
 
 rsync:
   label: rsync
+
+design_patterns:
+  label: Design Patterns
