@@ -8,12 +8,12 @@ tags:
 Here I present how we can transfer file continuously from dir_A to dir_B using rsync and cron,
 with a kill switch when the disk is amost full.
 
-This solution use basic system utilities and aim to be robust with the minimal amount of scripting
+This solution use linux basic system utilities and aim to be robust with the minimal amount of scripting
 
-The stack: 
+The tool stack: 
 
   *  rsync
-  *  crontab
+  *  cron
   *  flock
   *  killall
 
@@ -22,14 +22,25 @@ Edit the crontab using
 ```
 crontab -e
 ```
-and put in the following line ( but adjust the dir /data and rsync command to match your need obviously )
+and put in the following line ( but adjust the dir */data* and rsync command to match your need obviously )
 ```bash
-* * * * * bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//' -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
-* * * * * bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//' -gt 80 ] && killall rsync"
+* * * * * bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
+* * * * * bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//') -gt 80 ] && killall rsync"
 ```
 
+### But why ?
 
-### In details
+Transfering file between two computer is one of the most basic task,<br>
+and to do so, those above have blessed us with the holly rsync.
+
+But there is two more things that I need: 
+  * I want to transfer file continuously
+  * and it shall never fill my disk.
+
+This quest will be completed the unix way. 
+I'm lazy and I don't want to maintain code, to run any kind custom service, or to configure anything.
+
+### Details
 
 Both cron are encapsuled in *bash -c*, so the command is executed by bash and not the default shell wich is often sh
 More over, both cron are in the form of
@@ -68,7 +79,7 @@ By using *flock -n /tmp/file.lock*, the rsync will not be run if a previous cron
 
 The second command is here to kill all rsync if the disk usage exeed a certain amount.
 ```
-bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//' -gt 80 ] && killall rsync
+bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/\%//') -gt 80 ] && killall rsync
 ```
 The condition is:
 ```
