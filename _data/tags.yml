@@ -12,3 +12,6 @@ docker:
 
 dll:
   label: DLL
+
+rsync:
+  label: rsync
