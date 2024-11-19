@@ -38,15 +38,12 @@ The solution uses the following tools:
 
 2. Define two cron jobs under this user:  
 
-   - **First job**: Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:
 
 ```bash
+First job: Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:
 * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
-```  
 
-   - **Second job**: Terminates all `rsync` processes if disk usage exceeds 80%:
-
-```bash
+Second job: Terminates all `rsync` processes if disk usage exceeds 80%:
 * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -gt 80 ] && killall -u rsync_user_1 rsync"
 ```  
 
