@@ -19,6 +19,8 @@ But there is two more things that I need:
 I'm lazy, I don't want to maintain code or run any kind custom service.
 So here is my two cents on this.
 
+Feel free to hack this solution at your convenience.
+
 **The Tool Stack**
 
 The solution uses the following tools:  
@@ -110,11 +112,10 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
 ### Why These Safeguards?  
 
 1. **Disk Usage Thresholds**:  
-   - The first job ensures that `rsync` runs only when there’s sufficient free space (<70%).  
-   - The second job acts as a safety net, terminating `rsync` if disk usage exceeds 80%.  
+   - The first job ensures that `rsync` runs only when there’s sufficient free space.  
 
 2. **Avoid Overlapping Processes**:  
-   - `flock` prevents multiple `rsync` processes from running simultaneously, avoiding redundant operations.  
+   - `flock` prevents multiple `rsync` processes from running simultaneously.  
 
 3. **Handle Edge Cases**:  
    - Large data inflows or temporary connectivity loss could cause excessive disk usage during a single `rsync` session. The second job mitigates this risk by terminating such sessions.  
@@ -133,10 +134,8 @@ To prevent this, we "namespace" the termination by using the **process owner**. 
 
 By combining `rsync`, `cron`, `flock`, and `killall`, this setup provides a simple yet robust solution for continuously transferring files between Linux systems without the risk of filling up the disk.  
 
-No custom code, no complex services—just a reliable, lightweight solution.
-
 <br>
 <br>
 <br>
 <br>
-Happy syncing!  
+Bye!  
