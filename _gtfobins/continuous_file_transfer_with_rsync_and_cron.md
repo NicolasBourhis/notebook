@@ -61,7 +61,6 @@ bash -c "command_a && command_b"
 ```  
 Here, `command_b` is executed **only if** `command_a` evaluates to `true`.  
 
----
 
 ### First Cron Job  
 
@@ -85,7 +84,6 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
    - `flock -n /tmp/lock.file`: Ensures only one instance of `rsync` runs at a time. If another instance is running, the command exits without starting a new one.  
    - `rsync dir_A/ dir_B/`: Synchronizes files from `dir_A` to `dir_B`.  
 
----
 
 ### Second Cron Job  
 
@@ -104,7 +102,6 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
    - Sends a SIGTERM signal to all `rsync` processes owned by the user `rsync_user_1`.  
    - Ensures `rsync` exits gracefully without causing further disk space issues.  
 
----
 
 ### Why These Safeguards?  
 
@@ -124,6 +121,17 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
 Indiscriminately killing all `rsync` processes on the host system would be bold, as other users or services might also rely on `rsync`.  
 
 To prevent this, we "namespace" the termination by using the **process owner**. By creating a dedicated user (e.g., `rsync_user_1`), we ensure that only `rsync` processes owned by this specific user are targeted for termination.
+
+
+And Bonus,
+
+
+You can give this user a home, and give it a ssh-key to connect with rsync
+```bash
+sudo mkdir -p /home/rsync_user_1/.ssh
+sudo ssh-keygen -t rsa -N '' -f /home/rsync_user_1/.ssh/id_rsa
+sudo chown -R rsync_user_1:rsync_user_1 /home/rsync_user_1
+```  
 
 ---
 
