@@ -36,19 +36,17 @@ The solution uses the following tools:
 
 2. Define two cron jobs under this user:  
 
-   - **First cron job**:  
-     Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:
+   - **First job**: Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:
 
-     ```bash
-     * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
-     ```  
+```bash
+* * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
+```  
 
-   - **Second cron job**:  
-     Terminates all `rsync` processes if disk usage exceeds 80%:
+   - **Second job**: Terminates all `rsync` processes if disk usage exceeds 80%:
 
-     ```bash
-     * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -gt 80 ] && killall -u rsync_user_1 rsync"
-     ```  
+```bash
+* * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -gt 80 ] && killall -u rsync_user_1 rsync"
+```  
 
 This setup ensures continuous file synchronization while preventing disk overfill.  
 
@@ -72,11 +70,6 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
 - Disk usage is below 70%.  
 - No previous instance of the job is running.  
 
-The command:  
-```bash
-* * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
-```  
-
 1. **Condition to check disk usage**:  
    ```bash
    [ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ]
@@ -98,11 +91,6 @@ The command:
 ### Second Cron Job  
 
 **Purpose**: To terminate all `rsync` processes if disk usage exceeds 80%.  
-
-The command:  
-```bash
-* * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -gt 80 ] && killall -u rsync_user_1 rsync"
-```  
 
 1. **Condition to check disk usage**:  
    ```bash
