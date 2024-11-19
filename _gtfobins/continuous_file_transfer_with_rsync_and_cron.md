@@ -102,6 +102,8 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
    - Sends a SIGTERM signal to all `rsync` processes owned by the user `rsync_user_1`.  
    - Ensures `rsync` exits gracefully without causing further disk space issues.  
 
+---
+## Conclusion  
 
 ### Why These Safeguards?  
 
@@ -114,8 +116,6 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
 3. **Handle Edge Cases**:  
    - Large data inflows or temporary connectivity loss could cause excessive disk usage during a single `rsync` session. The second job mitigates this risk by terminating such sessions.  
 
----
-
 ### Why Use a Dedicated User?
 
 Indiscriminately killing all `rsync` processes on the host system would be bold, as other users or services might also rely on `rsync`.  
@@ -126,18 +126,12 @@ To prevent this, we "namespace" the termination by using the **process owner**. 
 And Bonus,
 
 
-You can give this user a home, and give it a ssh-key to connect with rsync
+You can give this user a ssh-key that rsync could use to connect to remote hosts
 ```bash
 sudo mkdir -p /home/rsync_user_1/.ssh
 sudo ssh-keygen -t rsa -N '' -f /home/rsync_user_1/.ssh/id_rsa
 sudo chown -R rsync_user_1:rsync_user_1 /home/rsync_user_1
-```  
-
----
-
-## Conclusion  
-
-By combining `rsync`, `cron`, `flock`, and `killall`, this setup provides a simple yet robust solution for continuously transferring files between Linux systems without the risk of filling up the disk.  
+```
 
 <br>
 <br>
