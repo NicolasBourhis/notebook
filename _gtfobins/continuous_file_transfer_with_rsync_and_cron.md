@@ -19,13 +19,13 @@ But there is two more things that I need:
 I'm lazy, I don't want to maintain code or run any kind custom service.
 So here is my two cents on this.
 
-## The Tool Stack
+**The Tool Stack**
 
 The solution uses the following tools:  
 - **rsync**: For file synchronization.  
-- **cron**: To automate periodic execution.  
-- **flock**: To prevent overlapping processes.  
-- **killall**: To terminate processes if needed.  
+- **cron**: For periodic execution.  
+- **flock**: Prevent overlapping processes.  
+- **killall**: Terminate processes if needed.  
 
 ## TL;DR  
 
@@ -37,13 +37,15 @@ The solution uses the following tools:
 2. Define two cron jobs under this user:  
 
    - **First cron job**:  
-     Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:  
+     Runs `rsync` only if disk usage is below 70% and no other instance of the job is running:
+
      ```bash
      * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -lt 70 ] && flock -n /tmp/lock.file rsync dir_A/ dir_B/"
      ```  
 
    - **Second cron job**:  
-     Terminates all `rsync` processes if disk usage exceeds 80%:  
+     Terminates all `rsync` processes if disk usage exceeds 80%:
+
      ```bash
      * * * * * rsync_user_1 bash -c "[ $(df /data | awk 'NR==2 {print $5}' | sed 's/%//') -gt 80 ] && killall -u rsync_user_1 rsync"
      ```  
