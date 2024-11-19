@@ -123,17 +123,9 @@ Here, `command_b` is executed **only if** `command_a` evaluates to `true`.
 
 ### Why Use a Dedicated User?
 
-We need the ability to safely use the `killall rsync` command to terminate synchronization processes when necessary. However, indiscriminately killing all `rsync` processes on the host system would be highly undesirable, as other users or services might also rely on `rsync`.  
+Indiscriminately killing all `rsync` processes on the host system would be bold, as other users or services might also rely on `rsync`.  
 
-To prevent this, we "namespace" the termination by using the **process owner**. By creating a dedicated user (e.g., `rsync_user_1`), we ensure that only `rsync` processes owned by this specific user are targeted for termination.  
-
-#### Why Not Use a PID-Based Mechanism?
-
-While tracking processes using a PID-based mechanism is possible, it adds unnecessary complexity to the solution. A PID-based approach would require:  
-- Maintaining PID files.  
-- Handling edge cases where processes terminate unexpectedly or PID files become stale.  
-
-Using a user-specific namespace for `killall` simplifies the solution while ensuring robust and precise control over process termination. This approach strikes a balance between functionality and simplicity.
+To prevent this, we "namespace" the termination by using the **process owner**. By creating a dedicated user (e.g., `rsync_user_1`), we ensure that only `rsync` processes owned by this specific user are targeted for termination.
 
 ---
 
